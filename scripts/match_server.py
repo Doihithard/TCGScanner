@@ -40,6 +40,14 @@ def match_card():
     return jsonify({"matches": result.data})
 
 
+@app.route("/", methods=["GET"])
+def health_check():
+    # Simple route so Render (or you, in a browser) can confirm the server is alive
+    return jsonify({"status": "ok"})
+
+
 if __name__ == "__main__":
-    # 0.0.0.0 makes this reachable from other devices on the same WiFi network (like your phone)
-    app.run(host="0.0.0.0", port=5000)
+    # Render (and most hosts) assign a port dynamically via this env var;
+    # falls back to 5000 for local testing where it's not set
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
